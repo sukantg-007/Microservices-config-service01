@@ -1,0 +1,37 @@
+package com.example.employee.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/employees")
+public class EmpController {
+	
+	@Value("${dbuser}")
+	private String dbuser;
+	
+	@Value("${dbpass}")
+	private String dbpass;
+	
+	@Value("${payment.provider}")
+	private String paymentProvider;
+	
+	@Value("${payment.timeout-ms}")
+	private int paymentTimeoutMs;
+	
+	@Value("${payment.retry-count}")
+	private int paymentRetryCount;
+	
+	@GetMapping
+	public String getEmployee() {
+		return "Employee Service is working with DB User: " + dbuser + " and DB Password: " + dbpass;
+	}
+	
+	@GetMapping("/config")
+	public String getConfig() {
+		return "Payment Provider: " + paymentProvider + ", Timeout: " + paymentTimeoutMs + "ms, Retry Count: " + paymentRetryCount;
+	}
+
+}

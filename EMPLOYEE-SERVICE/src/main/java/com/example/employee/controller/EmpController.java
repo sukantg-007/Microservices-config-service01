@@ -1,0 +1,48 @@
+package com.example.employee.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/employees")
+@RefreshScope
+public class EmpController {
+	
+	/*@Value("${dbuser}")
+	private String dbuser;
+	
+	@Value("${dbpass}")
+	private String dbpass;*/
+	
+	@Value("${payment.provider}")
+	private String paymentProvider;
+	
+	@Value("${payment.timeout-ms}")
+	private int paymentTimeoutMs;
+	
+	@Value("${payment.retry-count}")
+	private int paymentRetryCount;
+	
+	/*@GetMapping
+	public String getEmployee() {
+		return "Employee Service is working with DB User: " + dbuser + " and DB Password: " + dbpass;
+	}*/
+	
+	@GetMapping("/config")
+	public Map<String, Object> getConfig() {
+	    Map<String, Object> config = new HashMap<>();
+		/*config.put("dbuser", dbuser);
+		config.put("dbpass", dbpass);*/
+	    config.put("payment.provider", paymentProvider);
+	    config.put("payment.timeout-ms", paymentTimeoutMs);
+	    config.put("payment.retry-count", paymentRetryCount);
+	    return config;
+	}
+
+}

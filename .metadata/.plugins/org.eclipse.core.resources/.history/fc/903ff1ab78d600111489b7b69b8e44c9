@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # Management UI
+      - "15672:15672"
+    environment:
+      # Standard application user credentials
+      RABBITMQ_DEFAULT_USER: app_user
+      RABBITMQ_DEFAULT_PASS: changeme_app_pass
+      # Sets user tag to none, removing administrator/management privileges
+      RABBITMQ_DEFAULT_USER_TAGS: ""
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_logs:/var/log/rabbitmq/
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  rabbitmq_data:
+  rabbitmq_logs:

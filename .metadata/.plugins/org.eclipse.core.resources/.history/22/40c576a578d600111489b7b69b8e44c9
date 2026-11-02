@@ -1,0 +1,35 @@
+server:
+  port: 8083
+  
+  
+spring:
+  application:
+    name: EMPLOYEE-SERVICE
+  profiles:
+    active:
+    - dev
+  config:
+    import:
+      - optional:configserver:http://localhost:8888
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: sa
+    password: sa
+  cloud:
+    bus:
+      enabled: true
+      destination: springCloudBus
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,busrefresh,env"
+      
